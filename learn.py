@@ -92,11 +92,12 @@ def main(argv):
         
         cwd = os.getcwd()
 
-        os.chdir('C:\matlab\AuditoryToolbox\octave')
-
-        #cmd = "octave -q wav2mat.m " + test_dir + '\\' + test_sample_file + " 8000 128 > null"
+        #os.chdir('C:\matlab\AuditoryToolbox\octave')
+        os.chdir('C:\\wamp\\www\\recorder\\octave')
+        
+        #cmd = "octave -q wav2mat.m " + test_dir + '\\' + test_sample_file + " 8000 128 > null"        
         cmd = "octave -q wav2mat.m " + test_sample_file + " 8000 128 > null"
-
+        
         os.system(cmd)
 
         os.chdir(cwd)

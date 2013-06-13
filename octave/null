@@ -1,0 +1,4 @@
+ - Use `pkg list' to see a list of installed packages.
+ - MSYS shell available (C:\Octave-3.6.2\msys).
+ - Graphics backend: qt.
+

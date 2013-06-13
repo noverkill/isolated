@@ -33,7 +33,7 @@ fclose($output);
 
 $cmd = "python learn.py -i $wavfile3";
  
-//$gn = $cmd; //exec($cmd);
+//$gn = $cmd; 
 $gn = exec($cmd);
 
 $user = str_replace("\\", "_", $dir);
