@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    $url = "http://localhost:8080/recorder";
+    $url = "http://videtwo.com/recorder";
     
     //print_r($_SESSION);
     
@@ -68,7 +68,7 @@
         }
     </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script src="./recorderjs/recorder.js" type="text/javascript"></script>
+    <script src="recorder.js" type="text/javascript"></script>
     <script>    
         
         function callback(stream) {

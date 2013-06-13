@@ -1,1 +1,11 @@
-Isolated spoken digit recognition with web user inteface
+Isolated spoken digit recognition with HTML 5 / WebRTC web user inteface
+
+Requirements:
+
+Google Chrome 27+
+Python 2.7
+
+Matt Diamond's Recorder.js
+To record voice using WebRtc in browser
+(recorder.js and recorderWorker.js in root dir)
+github: https://github.com/mattdiamond/Recorderjs 

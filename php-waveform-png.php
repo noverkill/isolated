@@ -3,7 +3,8 @@
 //source: http://andrewfreiday.com/2010/04/29/generating-mp3-waveforms-with-php/
 //example: http://localhost:8080/recorder/php-waveform-png.php?wav=./wav/2013/04/27/j52qrsrm8t53mfgshjtrp45532/3.wav
 
-  $dir = "C:\\wamp\\www\\recorder\\wav\\";
+  //$dir = "C:\\wamp\\www\\recorder\\wav\\";
+  $dir = "./wav/";
   
   ini_set("max_execution_time", "30000");
   
@@ -68,6 +69,9 @@
        * Translated from Croation to English - July 11, 2011
        */
       $handle = fopen($filename, "r");
+      
+      //print "handle: $handle<br>";
+      
       // wav file header retrieval
       $heading[] = fread($handle, 4);
       $heading[] = bin2hex(fread($handle, 4));
@@ -82,6 +86,12 @@
       $heading[] = bin2hex(fread($handle, 2));
       $heading[] = fread($handle, 4);
       $heading[] = bin2hex(fread($handle, 4));
+      
+      /*
+      print "heading: <br>";
+      print_r($heading);
+      print "<br>";
+      */
       
       // wav bitrate 
       $peek = hexdec(substr($heading[10], 0, 2));
@@ -117,6 +127,13 @@
         }
       }
 
+      /*
+      print "img: <br>";
+      print_r($img);
+      print "<br>";      
+      exit;
+      */
+      
       while(!feof($handle) && $data_point < $data_size){
         if ($data_point++ % DETAIL == 0) {
           $bytes = array();
