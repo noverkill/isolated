@@ -1,9 +1,11 @@
 <?php
 
+$ds = DIRECTORY_SEPARATOR;
+
 if(isset($_GET['user'])) {
     
     $user = $_GET['user'];
-    $dir = str_replace("_", "\\", $user);
+    $dir = str_replace("_", $ds, $user);
     
     $session_id = explode('_', $user)[3];
     session_id($session_id);

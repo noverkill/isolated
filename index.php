@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    $url = "http://videtwo.com/recorder";
+    $url = "http://videtwo.com/isolated";
     
     //print_r($_SESSION);
     

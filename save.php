@@ -1,5 +1,7 @@
 <?php
 
+$ds = DIRECTORY_SEPARATOR;
+
 session_start();
 
 //print_r ($_POST);
@@ -7,7 +9,8 @@ session_start();
 $filename = $_POST['filename']; //2013\05\09\e01a3qd69fo76sjt05k39ab292\4 
 $number   = $_POST['number'];   //1
 
-$dir = "C:\\wamp\\www\\recorder\\wav\\";
+//$dir = "C:\\wamp\\www\\recorder\\wav\\";
+$dir = "{$ds}var{$ds}www{$ds}isolated{$ds}wav{$ds}";
 
 $file = $dir . $filename;
  

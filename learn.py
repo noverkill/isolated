@@ -1,5 +1,6 @@
 import sys
 
+"""
 sys.path.append('C:\wamp\www\recorder')
 sys.path.append('C:\Python27\lib\site-packages\speech-0.5.2-py2.7.egg')
 sys.path.append('C:\Windows\system32\python27.zip')
@@ -14,6 +15,7 @@ sys.path.append('C:\Python27\lib\site-packages\win32')
 sys.path.append('C:\Python27\lib\site-packages\win32\lib')
 sys.path.append('C:\Python27\lib\site-packages\Pythonwin')
 sys.path.append('C:\Python27\lib\site-packages\setuptools-0.6c11-py2.7.egg-info')
+"""
 
 import os, shutil
 import getopt, pylab, mdp
@@ -33,13 +35,12 @@ def guess(input, reservoir, dirname):
     pylab.plot(input)
     pylab.show()			
     pylab.figure()
-    """
-    
+    """	
+
     try:
-         #readout.beta = np.loadtxt(dirname + '\\beta.mat')
-        beta = np.loadtxt(dirname + '\\beta.mat')
+        beta = np.loadtxt(dirname + os.sep + 'beta.mat')
     except:
-        return 0 #19
+        return 0   #19
         
     x = reservoir.execute(input)
 
@@ -63,12 +64,16 @@ def main(argv):
     try:
       opts, args = getopt.getopt(argv,"hi:n:")
     except getopt.GetoptError:
-      print 'test.py -i <inputfile>'
+      print 'learn.py -i <inputfile>'
+      print 'eg. for test the reservoir: python learn.py -i /var/www/isolated/octave/two'
+      print 'eg. to make the reservoir learn: python learn.py -i /var/www/isolated/octave/two -n 0'
       sys.exit(2)
     
     for opt, arg in opts:
       if opt == '-h':
-         print 'test.py -i <inputfile>'
+         print 'learn.py -i <inputfile>'
+         print 'eg. for test the reservoir: python learn.py -i /var/www/isolated/octave/two'
+         print 'eg. to make the reservoir learn: python learn.py -i /var/www/isolated/octave/two -n 0'
          sys.exit()
       elif opt in ("-i"):
          inputfile = arg
@@ -76,12 +81,13 @@ def main(argv):
          number = arg
          #print number
          #sys.exit()
-
-    #print 'Input file is "', inputfile
+		 
+    #print 'Input file is: ', inputfile
+      
+    dirname= inputfile.rsplit(os.sep,1)[0]
+    #print 'dirname is: ', dirname
+    #sys.exit()
     
-    dirname= inputfile.rsplit('\\',1)[0]    
-    #print dirname
-        
     if inputfile is None:
         print 'no input file'
         sys.exit()
@@ -92,18 +98,19 @@ def main(argv):
         
         cwd = os.getcwd()
 
-        #os.chdir('C:\matlab\AuditoryToolbox\octave')
-        os.chdir('C:\\wamp\\www\\recorder\\octave')
+        os.chdir('octave')
         
-        #cmd = "octave -q wav2mat.m " + test_dir + '\\' + test_sample_file + " 8000 128 > null"        
+        #cmd = "octave -q wav2mat.m " + test_dir + os.sep + test_sample_file + " 8000 128 > null"        
         cmd = "octave -q wav2mat.m " + test_sample_file + " 8000 128 > null"
-        
+
+        #print 'cmd is: ', cmd
+	
         os.system(cmd)
 
         os.chdir(cwd)
-
+			   
     content = loadmat(test_sample_file + ".mat")
-
+	
     test_input = content['spec'].T
 
     input_dim = test_input.shape[1]
@@ -111,12 +118,12 @@ def main(argv):
     #readout = Oger.nodes.RidgeRegressionNode(use_pinv=True, input_dim=100)
     
     try:
-        pinput = open(dirname + '\\reservoir.pkl', 'rb')
+        pinput = open(dirname + os.sep + 'reservoir.pkl', 'rb')
         reservoir = pickle.load(pinput)
         pinput.close()
     except IOError:
         reservoir = Oger.nodes.LeakyReservoirNode(input_dim=input_dim, output_dim=100, input_scaling=.1, leak_rate=.3)
-        poutput = open(dirname + '\\reservoir.pkl', 'wb')
+        poutput = open(dirname + os.sep + 'reservoir.pkl', 'wb')
         pickle.dump(reservoir, poutput)
         poutput.close()
     
@@ -146,8 +153,8 @@ def main(argv):
     
     #if readout._xTx is None:
     try:
-        xTx = np.loadtxt(dirname + '\\xTx.mat')       
-        xTy = np.loadtxt(dirname + '\\xTy.mat')       
+        xTx = np.loadtxt(dirname + os.sep + 'xTx.mat')       
+        xTy = np.loadtxt(dirname + os.sep + 'xTy.mat')       
     except IOError:
         input_dim  = 100
         #readout._set_output_dim(10)
@@ -171,18 +178,12 @@ def main(argv):
     inv_xTx = utils.inv(xTx)   
     #readout.beta = mult(inv_xTx, readout._xTy)
     beta = mult(inv_xTx, xTy)
-    
+	
     # save everything to file
-    """
-    np.savetxt(dirname + '\\xtx.mat'   , readout._xTx)
-    np.savetxt(dirname + '\\xty.mat'   , readout._xTy)
-    np.savetxt(dirname + '\\invxtx.mat', inv_xTx)
-    np.savetxt(dirname + '\\beta.mat'  , readout.beta)
-    """
-        
-    np.savetxt(dirname + '\\xtx.mat'   , xTx)
-    np.savetxt(dirname + '\\xty.mat'   , xTy)
-    np.savetxt(dirname + '\\beta.mat'  , beta)
+    np.savetxt(dirname + os.sep + 'xtx.mat'   , xTx)
+    np.savetxt(dirname + os.sep + 'xty.mat'   , xTy)
+    #np.savetxt(dirname + os.sep + 'invxtx.mat', inv_xTx)
+    np.savetxt(dirname + os.sep + 'beta.mat'  , beta)
     
     print 99
                        
