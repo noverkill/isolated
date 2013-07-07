@@ -42,19 +42,28 @@ sudo apt-get install octave
 ii, installing octave-headers for compile mex files
     (see http://wiki.octave.org/FAQ#I_cannot_install_a_package._Octave_complains_about_a_missing_mkoctfile.)
 
-sudo apt-get install octave-headers
 
-iii, compile mex file in the app octave sub dir:
 
-a, delete all mex files:
-
-    rm *.mex
+iii, The Octave subfolder contains mex files compiled on ubuntu system, 
+    
+	The win7mex subfolder contains mex files compiled on a win7 system
+	So, if you use win7 then you can try copy these mex files to the Octave folder
 	
-b, compile c files to mex with octave:
+    There is no guarantee that either the mex files complied on ubuntu
+    or the ones that compiled on win 7 work on the corresponding op system,
+    in which case you should compile the c sources on your system, to do this:	 
+	 
+		a, sudo apt-get install octave-headers
+	 
+		b, delete all mex files in the Octave subfolder:
 
-	mkoctfile --mex soscascade.c
-	mkoctfile --mex sosfilters.c
-	mkoctfile --mex agc.c
+			rm *.mex
+	
+		c, compile c files to mex with octave:
+
+			mkoctfile --mex soscascade.c
+			mkoctfile --mex sosfilters.c
+			mkoctfile --mex agc.c
 
 iv, test is wav2mat works: 
     (it makes the LyonPassiveEar tranformation and the wav to mat conversion)
