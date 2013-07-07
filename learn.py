@@ -1,22 +1,4 @@
 import sys
-
-"""
-sys.path.append('C:\wamp\www\recorder')
-sys.path.append('C:\Python27\lib\site-packages\speech-0.5.2-py2.7.egg')
-sys.path.append('C:\Windows\system32\python27.zip')
-sys.path.append('C:\Python27\DLLs')
-sys.path.append('C:\Python27\lib')
-sys.path.append('C:\Python27\lib\plat-win')
-sys.path.append('C:\Python27\lib\lib-tk')
-sys.path.append('C:\Python27')
-sys.path.append('C:\Users\szilard\AppData\Roaming\Python\Python27\site-packages')
-sys.path.append('C:\Python27\lib\site-packages')
-sys.path.append('C:\Python27\lib\site-packages\win32')
-sys.path.append('C:\Python27\lib\site-packages\win32\lib')
-sys.path.append('C:\Python27\lib\site-packages\Pythonwin')
-sys.path.append('C:\Python27\lib\site-packages\setuptools-0.6c11-py2.7.egg-info')
-"""
-
 import os, shutil
 import getopt, pylab, mdp
 from scipy.io import loadmat
@@ -35,8 +17,8 @@ def guess(input, reservoir, dirname):
     pylab.plot(input)
     pylab.show()			
     pylab.figure()
-    """	
-
+    """
+	
     try:
         beta = np.loadtxt(dirname + os.sep + 'beta.mat')
     except:
@@ -151,10 +133,12 @@ def main(argv):
     readout._stop_training()
     """
     
+	#print 'dirname: ', dirname + os.sep + 'xtx.mat'
+    
     #if readout._xTx is None:
     try:
-        xTx = np.loadtxt(dirname + os.sep + 'xTx.mat')       
-        xTy = np.loadtxt(dirname + os.sep + 'xTy.mat')       
+        xTx = np.loadtxt(dirname + os.sep + 'xtx.mat')       
+        xTy = np.loadtxt(dirname + os.sep + 'xty.mat')       
     except IOError:
         input_dim  = 100
         #readout._set_output_dim(10)
@@ -166,7 +150,7 @@ def main(argv):
         xTx = numx.zeros((x_size, x_size), dtype)
         #readout._xTy = numx.zeros((x_size, output_dim), dtype)
         xTy = numx.zeros((x_size, output_dim), dtype)
-                
+	
     # update internal variables
     #readout._xTx += mult(x.T, x)
     xTx += mult(x.T, x)

@@ -2,10 +2,110 @@ Isolated spoken digit recognition with HTML 5 / WebRTC web user inteface
 
 Requirements:
 
-Google Chrome 27+
+Server side:
+
+Octave (tested with ver 3.6.2) 
+with Matlab Auditory Toolbox version 2
+
+	To the LyonPassiveEar and wav to mat transformations
+
 Python 2.7
 
-Matt Diamond's Recorder.js
-To record voice using WebRtc in browser
-(recorder.js and recorderWorker.js in root dir)
-github: https://github.com/mattdiamond/Recorderjs 
+	To the echo state network implementation
+
+PHP (tested with ver 5.4.3)
+with Andrew Freiday's php-waveform-png.php
+
+	To create the waveform and handle and save user sessions
+	and to provide the html user interface
+	
+Client side:
+	
+Google Chrome 27+
+with Matt Diamond's Recorder.js
+	
+	To record voice using WebRtc in browser
+	(recorder.js and recorderWorker.js in root dir)
+	github: https://github.com/mattdiamond/Recorderjs 
+	
+	
+Notes:
+
+Installing and make the application work on an Ubuntu server
+
+i, installing octave latest stable (at the time it is 3.6.4)
+
+sudo apt-add-repository ppa:octave/stable
+sudo apt-get update
+sudo apt-get install octave
+
+ii, installing octave-headers for compile mex files
+    (see http://wiki.octave.org/FAQ#I_cannot_install_a_package._Octave_complains_about_a_missing_mkoctfile.)
+
+sudo apt-get install octave-headers
+
+iii, compile mex file in the app octave sub dir:
+
+a, delete all mex files:
+
+    rm *.mex
+	
+b, compile c files to mex with octave:
+
+	mkoctfile --mex soscascade.c
+	mkoctfile --mex sosfilters.c
+	mkoctfile --mex agc.c
+
+iv, test is wav2mat works: 
+    (it makes the LyonPassiveEar tranformation and the wav to mat conversion)
+	
+a, remove the existing two.mat file:
+
+		rm two.mat
+
+b, run the wav2mat octave script from cmd line:
+
+	octave wav2mat.m two 8000 128
+
+	c, check if a new two.mat file successfully created 
+		(the file size must be around 23 KB)
+		
+v, apply neccessary file permission to the app files:
+
+	e.g. let's say the app is inside the sufolder called isolated: 
+	one simple solution (maybe not the most secure) is: chmod -R 777 isolated
+
+vi, make the learn.py work from command line
+
+i, try to run: python learn.py -i absolute-path-to-app/octave/two
+   e.g. python learn.py -i /var/www/isolated/octave/two
+
+	a, if it complaining about missing modules then install them:
+
+			apt-get install python-numpy python-scipy python-mdp   
+				/the above installs almost all the modules are needed except Oger/
+			
+			to install Oger:
+				wget http.//organic.elis.ugent.be/sites/organic.elis.ugent.be/files/Oger-1.1.3.tar.gz
+				tar -xvf Oger-1.1.3.tar.gz
+				cd Oger-1.1.3 
+				sudo python setup.py install
+				(rm Oger-1.1.3.tar.gz)
+				(rm Oger-1.1.3)
+	
+	b, if you have error message then check and adjust if needed all the path related lines 
+	   in the programming code
+	
+	c, if everything goes well this gives back a 0
+
+vii, try to run: python learn.py -i absolute-path-to-app/octave/two -n 0
+   e.g. python learn.py -i /var/www/isolated/octave/two -n 0
+
+	a, if everything goes well it creates the following 5 files under the octave directory 
+	   two.mat, beta.mat, xtx.mat, xty.mat, reservoir.pkl
+		(remove these files after the test: rm *.mat, rm *.pkl) 
+
+viii, set the $url variable in index.php
+
+ 	
+
